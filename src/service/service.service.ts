@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Service, ServiceDocument } from './schemas/service.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ServiceService {
+  constructor(
+    @InjectModel(Service.name) private serviceModel: Model<ServiceDocument>) {}
+
   create(createServiceDto: CreateServiceDto) {
-    return 'This action adds a new service';
+    return this.serviceModel.create(createServiceDto);
   }
 
   findAll() {
-    return `This action returns all service`;
+    return this.serviceModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} service`;
+  findOne(id: string) {
+    return this.serviceModel.findById(id);
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} service`;
+  update(id: string, updateServiceDto: UpdateServiceDto) {
+    return this.serviceModel.findByIdAndUpdate(id, updateServiceDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+  remove(id: string) {
+    return this.serviceModel.findByIdAndRemove(id);
   }
 }

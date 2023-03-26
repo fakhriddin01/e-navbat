@@ -102,7 +102,7 @@ export class ClientService {
 
       await this.otpModel.findByIdAndRemove(client.otp_id)
       const updatedOtp = await this.otpModel.findByIdAndUpdate(getOtp._id, {verified: true}, {new: true});
-      const updatedClient = await this.clientModel.findByIdAndUpdate(client._id, {otp_id: getOtp._id.toString()});
+      const updatedClient = (await this.clientModel.findByIdAndUpdate(client._id, {otp_id: getOtp._id.toString()}));
 
       const tokens = await this.generateTokenForClient(client);
       const hashed_token = await bcrypt.hash(tokens.refresh_token,7);
@@ -124,11 +124,11 @@ export class ClientService {
 
   
   findAll() {
-    return this.clientModel.find();
+    return this.clientModel.find().populate('queues');
   }
 
   findOne(id: string) {
-    return this.clientModel.findById(id);
+    return this.clientModel.findById(id).populate('queues');
   }
 
   remove(id: string) {

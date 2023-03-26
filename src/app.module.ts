@@ -8,6 +8,8 @@ import { FilesModule } from '../files/files.module';
 import { ClientModule } from './client/client.module';
 import { SpecWorkingDayModule } from './spec-working-day/spec-working-day.module';
 import { ServiceModule } from './service/service.module';
+import { SpecServiceModule } from './spec-service/spec-service.module';
+import { QueueModule } from './queue/queue.module';
 
 
 @Module({
@@ -20,7 +22,9 @@ import { ServiceModule } from './service/service.module';
         FilesModule,
         ClientModule,
         SpecWorkingDayModule,
-        ServiceModule   
+        ServiceModule,
+        SpecServiceModule,
+        QueueModule   
     ],
     controllers: [],
     providers: [],

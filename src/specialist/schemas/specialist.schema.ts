@@ -59,6 +59,9 @@ export class Specialist {
 
   @Prop({type:[{type:mongoose.Schema.Types.ObjectId, ref: 'SpecWorkingDay'}], default: []},)
   working_day: String[];
+
+  @Prop({type:[{type:mongoose.Schema.Types.ObjectId, ref: 'SpecService'}], default: []},)
+  services: String[];
 }
 
 export const SpecialistSchema = SchemaFactory.createForClass(Specialist);

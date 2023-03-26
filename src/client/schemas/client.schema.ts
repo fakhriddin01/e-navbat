@@ -27,6 +27,9 @@ export class Client {
   @Prop({type:mongoose.Schema.Types.ObjectId, ref: 'Otp'})
   otp_id: string;
 
+  @Prop({type:[{type:mongoose.Schema.Types.ObjectId, ref: 'Queue'}], default: []},)
+  queues: String[];
+
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

@@ -24,8 +24,6 @@ export class SpecialistController {
     return this.specialistService.validateOtp(validateOtp, req);
   }
 
-  @UseGuards(SelfGuard)
-  @UseGuards(JwtGuard)
   @Post(':id/refresh')
   refreshToken(@Param('id') id: string, @Body() refreshTokenDto: RefreshTokenDto, @Req() req: Request) {
     return this.specialistService.refreshToken(id, refreshTokenDto, req);

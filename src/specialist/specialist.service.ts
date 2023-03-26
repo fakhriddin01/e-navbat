@@ -190,11 +190,11 @@ export class SpecialistService {
   }
 
   findAll() {
-    return this.specialistModel.find().populate('working_day');
+    return this.specialistModel.find().populate('working_day').populate('services');
   }
 
   findOne(id: string) {
-    return this.specialistModel.findById(id).populate('working_day');
+    return this.specialistModel.findById(id).populate('working_day').populate('services');
   }
 
   

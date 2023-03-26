@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateSpecWorkingDayDto } from './dto/create-spec-working-day.dto';
 import { UpdateSpecWorkingDayDto } from './dto/update-spec-working-day.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -17,6 +17,10 @@ export class SpecWorkingDayService {
 
 
   async create(createSpecWorkingDayDto: CreateSpecWorkingDayDto) {
+    const existDay = await this.specWorkingDayModel.findOne({spec_id: createSpecWorkingDayDto.spec_id, day_of_week: createSpecWorkingDayDto.day_of_week});
+    if(existDay){
+      throw new BadRequestException('Working day already exists');
+    }
     const workingDay = await this.specWorkingDayModel.create(createSpecWorkingDayDto)
     const spec = await this.specialistModel.findById(createSpecWorkingDayDto.spec_id)
 
