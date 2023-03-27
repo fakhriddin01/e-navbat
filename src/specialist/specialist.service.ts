@@ -15,7 +15,7 @@ import { Request } from 'express';
 import { Token, TokenDocument } from '../token/schemas/token.schema';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { UpdateSpecialistDto } from './dto/update-specialist.dto';
-import { FilesService } from '../../files/files.service';
+import { FilesService } from '../files/files.service';
 
 
 @Injectable()
@@ -126,6 +126,8 @@ export class SpecialistService {
 
   private async generateTokenForSpec(spec: SpecialistDocument){
     const jwtPayload = { id: spec.id, is_active: spec.spec_is_active, otp_id: spec.otp_id};
+    console.log(jwtPayload);
+    
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
         secret: process.env.ACCESS_TOKEN_KEY,

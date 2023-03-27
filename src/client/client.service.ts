@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Otp, OtpDocument } from '../otp/schemas/otp.schema';
 import { Token, TokenDocument } from '../token/schemas/token.schema';
 import { JwtService } from '@nestjs/jwt';
-import { FilesService } from '../../files/files.service';
+import { FilesService } from '../files/files.service';
 import { ClientPhoneNumberDto } from './dto/phone-number.dto';
 import * as otpGenerator from 'otp-generator';
 import { AddMinutesToDate } from '../helper/addMinutes';

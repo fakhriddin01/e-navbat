@@ -6,7 +6,7 @@ import { Specialist, SpecialistSchema } from './schemas/specialist.schema';
 import { Otp, OtpSchema } from '../otp/schemas/otp.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { Token, TokenSchema } from '../token/schemas/token.schema';
-import { FilesModule } from '../../files/files.module';
+import { FilesModule } from '../files/files.module';
 
 @Module({
   imports:[MongooseModule.forFeature([{name: Specialist.name, schema: SpecialistSchema}, {name: Otp.name, schema: OtpSchema}, {name: Token.name, schema: TokenSchema}]),

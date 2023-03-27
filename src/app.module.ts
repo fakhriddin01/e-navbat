@@ -4,12 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SpecialistModule } from './specialist/specialist.module';
 import { OtpModule } from './otp/otp.module';
 import { TokenModule } from './token/token.module';
-import { FilesModule } from '../files/files.module';
+import { FilesModule } from './files/files.module';
 import { ClientModule } from './client/client.module';
 import { SpecWorkingDayModule } from './spec-working-day/spec-working-day.module';
 import { ServiceModule } from './service/service.module';
 import { SpecServiceModule } from './spec-service/spec-service.module';
 import { QueueModule } from './queue/queue.module';
+import { AdminModule } from './admin/admin.module';
 
 
 @Module({
@@ -24,7 +25,8 @@ import { QueueModule } from './queue/queue.module';
         SpecWorkingDayModule,
         ServiceModule,
         SpecServiceModule,
-        QueueModule   
+        QueueModule,
+        AdminModule,
     ],
     controllers: [],
     providers: [],

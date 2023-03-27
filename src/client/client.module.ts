@@ -6,7 +6,7 @@ import { Client, ClientSchema } from './schemas/client.schema';
 import { Otp, OtpSchema } from '../otp/schemas/otp.schema';
 import { Token, TokenSchema } from '../token/schemas/token.schema';
 import { JwtModule } from '@nestjs/jwt';
-import { FilesModule } from '../../files/files.module';
+import { FilesModule } from '../files/files.module';
 
 @Module({
   imports:[MongooseModule.forFeature(
