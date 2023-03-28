@@ -56,7 +56,7 @@ export class SpecialistService {
     return {status: "Success", Details: encoded}
   }
 
-  async validateOtp(validateOtp: ValidateOtp, req: Request){
+  async validateOtp(validateOtp: ValidateOtp, req: any){
     
     const {verification_key, otp, check} = validateOtp;
     const currentdate = new Date();
@@ -90,7 +90,7 @@ export class SpecialistService {
       const tokens = await this.generateTokenForSpec(newSpec);
       const hashed_token = await bcrypt.hash(tokens.refresh_token,7);
 
-      const deviceToken = await this.tokenModel.create({table_name: "specialist", user_id: newSpec._id.toString(), user_device: req.headers['user-agent'], hashed_token })
+      const deviceToken = await this.tokenModel.create({table_name: "specialist", user_id: newSpec._id.toString(), user_device: `${req.device.ua}`, user_os: `${req.device.os.name} ${req.device.os.version}`, hashed_token })
 
       return {
         message: "new",
@@ -104,13 +104,12 @@ export class SpecialistService {
     await this.otpModel.findByIdAndRemove(spec.otp_id)
     const updatedOtp = await this.otpModel.findByIdAndUpdate(getOtp._id, {verified: true}, {new: true});
     const updatedSpec = await this.specialistModel.findByIdAndUpdate(spec._id, {otp_id: getOtp._id.toString()});
-
     const tokens = await this.generateTokenForSpec(spec);
     const hashed_token = await bcrypt.hash(tokens.refresh_token,7);
-    const existDevice = await this.tokenModel.findOne({user_id: spec._id, user_device: req.headers['user-agent']});
+    const existDevice = await this.tokenModel.findOne({user_id: spec._id, user_device: req.device.device.vendor});
     let deviceToken;
     if(!existDevice){
-       deviceToken = await this.tokenModel.create({table_name: "specialist", user_id: spec._id.toString(), user_device: req.headers['user-agent'], hashed_token })
+       deviceToken = await this.tokenModel.create({table_name: "specialist", user_id: spec._id.toString(), user_device: req.device.ua, user_os: `${req.device.os.name} ${req.device.os.version}`, hashed_token })
     }else{
       deviceToken = await this.tokenModel.findByIdAndUpdate(existDevice._id, {hashed_token})
     }
@@ -126,7 +125,6 @@ export class SpecialistService {
 
   private async generateTokenForSpec(spec: SpecialistDocument){
     const jwtPayload = { id: spec.id, is_active: spec.spec_is_active, otp_id: spec.otp_id};
-    console.log(jwtPayload);
     
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {

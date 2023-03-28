@@ -7,6 +7,7 @@ import { SpecWorkingDay, SpecWorkingDaySchema } from '../spec-working-day/schema
 import { Specialist, SpecialistSchema } from '../specialist/schemas/specialist.schema';
 import { SpecService, SpecServiceSchema } from '../spec-service/schemas/spec-service.schema';
 import { Client, ClientSchema } from '../client/schemas/client.schema';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports:[MongooseModule.forFeature(
@@ -15,7 +16,8 @@ import { Client, ClientSchema } from '../client/schemas/client.schema';
       {name: Specialist.name, schema: SpecialistSchema},
       {name: SpecService.name, schema: SpecServiceSchema},
       {name: Client.name, schema: ClientSchema}
-    ])
+    ]),
+    JwtModule.register({})
 ],
   controllers: [QueueController],
   providers: [QueueService]

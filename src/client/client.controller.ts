@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtGuard } from '../guards/jwt-auth.guard';
 import { IsCreator } from '../guards/is-creator.guard';
 import { SelfGuard } from '../guards/user-self.guard';
+import { AddDeviceInfo } from '../decorators/addDeviceToReq';
 
 @Controller('client')
 export class ClientController {
@@ -21,7 +22,7 @@ export class ClientController {
   }
 
   @Post('validate')
-  validateOtp(@Body() validateOtp: ValidateOtp, @Req() req: Request) {
+  validateOtp(@Body() validateOtp: ValidateOtp, @AddDeviceInfo() req: any) {
     return this.clientService.validateOtp(validateOtp, req);
   }
 
@@ -40,14 +41,12 @@ export class ClientController {
     return this.clientService.update(id, updateClientDto, file);
   }
 
-  @UseGuards(IsCreator)
   @UseGuards(JwtGuard)
   @Get('all')
   findAll() {
     return this.clientService.findAll();
   }
 
-  @UseGuards(SelfGuard)
   @UseGuards(JwtGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {

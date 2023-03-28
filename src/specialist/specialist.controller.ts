@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtGuard } from '../guards/jwt-auth.guard';
 import { IsCreator } from '../guards/is-creator.guard';
 import { SelfGuard } from '../guards/user-self.guard';
+import { AddDeviceInfo } from '../decorators/addDeviceToReq';
 
 @Controller('specialist')
 export class SpecialistController {
@@ -18,9 +19,9 @@ export class SpecialistController {
   sendOtp(@Body() phoneNumberDto: PhoneNumberDto) {
     return this.specialistService.sendOtp(phoneNumberDto);
   }
-
+          
   @Post('validate')
-  validateOtp(@Body() validateOtp: ValidateOtp, @Req() req: Request) {
+  validateOtp(@Body() validateOtp: ValidateOtp, @AddDeviceInfo() req: any) {
     return this.specialistService.validateOtp(validateOtp, req);
   }
 

@@ -8,23 +8,23 @@ import { Model } from 'mongoose';
 @Injectable()
 export class OtpService {
             
-  async create(createOtpDto: CreateOtpDto) {
-    return 'This action adds a new otp';
-  }
+  // async create(createOtpDto: CreateOtpDto) {
+  //   return 'This action adds a new otp';
+  // }
 
-  findAll() {
-    return `This action returns all otp`;
-  }
+  // findAll() {
+  //   return `This action returns all otp`;
+  // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} otp`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} otp`;
+  // }
 
-  update(id: number, updateOtpDto: UpdateOtpDto) {
-    return `This action updates a #${id} otp`;
-  }
+  // update(id: number, updateOtpDto: UpdateOtpDto) {
+  //   return `This action updates a #${id} otp`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} otp`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} otp`;
+  // }
 }

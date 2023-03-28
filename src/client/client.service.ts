@@ -53,8 +53,10 @@ export class ClientService {
       return {status: "Success", Details: encoded}
     }
 
-    async validateOtp(validateOtp: ValidateOtp, req: Request){
-    
+    async validateOtp(validateOtp: ValidateOtp, req: any){
+      
+      console.log(req.device);
+      
       const {verification_key, otp, check} = validateOtp;
       const currentdate = new Date();
       const decoded = await decode(verification_key);
@@ -88,8 +90,8 @@ export class ClientService {
         const newClient = await this.clientModel.create({client_phone_number: check, otp_id: getOtp._id.toString()})
         const tokens = await this.generateTokenForClient(newClient);
         const hashed_token = await bcrypt.hash(tokens.refresh_token,7);
-  
-        const deviceToken = await this.tokenModel.create({table_name: "client", user_id: newClient._id.toString(), user_device: req.headers['user-agent'], hashed_token })
+        
+        const deviceToken = await this.tokenModel.create({table_name: "client", user_id: newClient._id.toString(), user_device: req.device.ua, user_os: `${req.device.os.name} ${req.device.os.version}`, hashed_token })
   
         return {
           message: "new",
@@ -98,6 +100,8 @@ export class ClientService {
           deviceToken,
           tokens
         }
+
+
       }
 
       await this.otpModel.findByIdAndRemove(client.otp_id)
@@ -109,7 +113,7 @@ export class ClientService {
       const existDevice = await this.tokenModel.findOne({user_id: client._id, user_device: req.headers['user-agent']});
       let deviceToken;
       if(!existDevice){
-        deviceToken = await this.tokenModel.create({table_name: "client", user_id: client._id.toString(), user_device: req.headers['user-agent'], hashed_token })
+        deviceToken = await this.tokenModel.create({table_name: "client", user_id: client._id.toString(), user_device: req.device.ua, user_os: `${req.device.os.name}+${req.device.os.version}`, hashed_token })
       }else{
         deviceToken = await this.tokenModel.findByIdAndUpdate(existDevice._id, {hashed_token})
       }

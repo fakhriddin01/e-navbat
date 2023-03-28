@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { UpdatePasswordDtp } from './dto/update-password.dto';
 
 @Injectable()
 export class AdminService {
@@ -100,6 +101,32 @@ export class AdminService {
       updateTokenModel
     };
   };
+
+  async updatePassword(id: string, updatePaswordDto: UpdatePasswordDtp){
+    const admin = await this.adminModel.findById(id);
+
+    if(!admin){
+      throw new BadRequestException('admin not found')
+    }
+
+    const isCorrect = await bcrypt.compare(updatePaswordDto.old_password, admin.admin_hashed_password);
+    if(!isCorrect){
+      throw new BadRequestException('Password not correct')
+    }
+
+    if(updatePaswordDto.new_password !== updatePaswordDto.confirm_password){
+      throw new BadRequestException('newpassword and varification not match')
+    }
+
+    const hashed_password = await bcrypt.hash(updatePaswordDto.new_password, 7);
+
+    const updatedAdmin = await this.adminModel.findByIdAndUpdate(id, {admin_hashed_password: hashed_password}, {new: true})
+
+    return {
+      message: "password updted",
+      updatedAdmin
+    }
+  }
 
 
 
